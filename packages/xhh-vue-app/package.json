@@ -1,0 +1,7 @@
+{
+  "name": "xhh-vue-app",
+  "version": "1.0.0",
+  "description": "a vue template for vue",
+  "main": "index.js",
+  "license": "MIT"
+}
