@@ -1,21 +1,22 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const tsConfig = require("../tsconfig.json");
 const tsAlias = tsConfig.compilerOptions.paths;
-// const {
-//   createLoadableComponentsTransformer,
-// } = require("typescript-loadable-components-plugin");
 
 const formatAlias = {};
 
 for (let key in tsAlias) {
-  formatAlias[key] = path.resolve(__dirname, "..", tsAlias[key][0]);
+  formatAlias[key] = path.join(__dirname, "..", tsAlias[key][0]);
 }
 
 module.exports = {
-  entry: ["./src/index.tsx"],
+  entry: {
+    // vendor: ["react", "react-dom", "react-router", "react-router-dom"],
+    app: "./src/index.tsx",
+  },
   output: {
     path: path.resolve(__dirname, "../dist"),
+    clean: true,
+    filename: "[name].[contenthash].js",
   },
   module: {
     rules: [
@@ -27,15 +28,9 @@ module.exports = {
         },
       },
       {
-        test: /\.s[ac]ss$/i,
-        use: [
-          // 将 JS 字符串生成为 style 节点
-          "style-loader",
-          // 将 CSS 转化成 CommonJS 模块
-          "css-loader",
-          // 将 Sass 编译成 CSS
-          "sass-loader",
-        ],
+        test: /\.m?[jt]sx?$/,
+        use: "react-hot-loader/webpack",
+        include: /node_modules/,
       },
       {
         test: /\.(png|jpg|gif)$/i,
@@ -48,17 +43,6 @@ module.exports = {
           },
         ],
       },
-      // ts-loader 与 @component/loadable 有冲突，无法实现code splitting
-      // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
-      // {
-      //   test: /\.tsx?$/,
-      //   loader: "ts-loader",
-      //   options: {
-      //     getCustomTransformers: (program) => ({
-      //       before: [createLoadableComponentsTransformer(program, {})],
-      //     }),
-      //   },
-      // },
     ],
   },
   resolve: {
@@ -66,11 +50,17 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js"],
     alias: {
       ...formatAlias,
+      // "react-dom": "@hot-loader/react-dom",
     },
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "../public/index.html"),
-    }),
-  ],
+  // externalsType: "script",
+  externals: {
+    // react: "React",
+    // "react-dom": "ReactDOM",
+    // "react-dom":
+    //   "https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js",
+    // react:
+    //   "https://cdn.bootcdn.net/ajax/libs/react/17.0.2/umd/react.production.min.js",
+  },
+  plugins: [],
 };

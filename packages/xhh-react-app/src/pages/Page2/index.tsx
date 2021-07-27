@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.scss";
+import "./index.less";
 
 function Page2() {
   return <div className="Page2">Page2</div>;

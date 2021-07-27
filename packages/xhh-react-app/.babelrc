@@ -1,12 +1,27 @@
 {
   "presets": [
-    "@babel/preset-env",
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "targets": {
+          "edge": "17",
+          "firefox": "60",
+          "chrome": "67",
+          "safari": "11.1"
+        },
+        "corejs": 3,
+        "modules": "auto"
+      }
+    ],
     "@babel/preset-react",
     "@babel/preset-typescript"
   ],
   "plugins": [
-    "react-hot-loader/babel",
+    // "react-hot-loader/babel",
     "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-typescript"
+    "@babel/plugin-transform-typescript",
+    "@babel/plugin-transform-runtime",
+    ["import", { "libraryName": "antd", "style": true }]
   ]
 }
